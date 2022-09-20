@@ -29,5 +29,9 @@ favorite_languages = {
 
 print("the following languages have been mentionated: ")
 
-for languages in favorite_languages.values():
-	print(languages.title())
+#for languages in favorite_languages.values():
+#	print(languages.title())
+
+#just one time value
+for language in set(favorite_languages.values()):
+	print(language.title())
