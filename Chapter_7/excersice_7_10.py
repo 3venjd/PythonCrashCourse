@@ -1,11 +1,11 @@
 places = {}
 
-polling_active = True
+polling_activate = True
 
 while polling_activate:
     #prompt for the person's name and response
     name = input("\nWhat is your name? ")
-    response = input("if you could visit one place in the worl, where would you go? ")
+    response = input("if you could visit one place in the world, where would you go? ")
 
     #store the response in the dictionary
     places[name] = response
