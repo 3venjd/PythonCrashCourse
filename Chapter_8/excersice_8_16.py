@@ -1,0 +1,5 @@
+import printing_functions
+from printing_functions import print_models,show_completed_models
+from printing_functions import print_models as printOneModel,show_completed_models as showAllModel
+import printing_functions as showModels
+from printing_functions import *
