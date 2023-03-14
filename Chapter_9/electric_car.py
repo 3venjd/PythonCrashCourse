@@ -1,31 +1,6 @@
-class Car:
-    """A simple attempt to represent a car"""
-    def __init__(self, make, model, year):
-        self.make = make
-        self.model = model
-        self.year = year
-        self.odometer_reading = 0
-    
-    def get_descriptive_name(self):
-        """Return a neatly formatted descriptive name"""
-        long_name = f"{self.year} {self.make} {self.model}"
-        return long_name.title()
-    
-    def read_odometer(self):
-        """Print a statement showing the car's mileage"""
-        print(f"This car has {self.odometer_reading} miles on it")
+from car import Car
 
-    def update_odometer(self, miles):
-        """Set the odometer reading to the given value
-           Reject the change if it attempts to roll the odometer back
-        """
-        #if mileage >= self.odometer_reading:
-        #    self.odometer_reading = mileage
-        #else:
-        #    print("You can't roll back an odometer")
-
-        #Add the given amount to the odometer reading
-        self.odometer_reading += miles
+"""A set of classes used to represent gas and electric cars"""
 
 class Battery:
     """A simple attempt to model a battery for an electric car"""
@@ -52,9 +27,7 @@ class Battery:
            self.battery_size = 100
            print(f'Battery was upgraded to {self.battery_size}')
        else:
-           print(f'Battery size is already')
-        
-        
+           print(f'Battery size is already')     
         
 class ElectricCar(Car):
     """Represent aspects of a car, specific to electric vehicles"""
@@ -74,10 +47,3 @@ class ElectricCar(Car):
     def fill_gas_tank(self):
         """Electric cars don't have gas tanks"""
         print("This car doesn't need a gas tank!")
-        
-my_tesla = ElectricCar('tesla', 'model s', '2019')
-print(my_tesla.get_descriptive_name())
-#my_tesla.describe_battery()
-my_tesla.battery.describe_battery()
-my_tesla.battery.upgrade_battery()
-my_tesla.battery.get_range()

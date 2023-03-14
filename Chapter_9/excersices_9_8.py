@@ -6,6 +6,7 @@ class Admin(User):
         self.privileges = Privileges()
     
     def show_privileges(self):
+        print(f'the user {self.firstName} {self.lastName} can:')
         for privilege in self.privileges.priv:
             print(privilege)
             
@@ -13,7 +14,3 @@ class Privileges:
     def __init__(self, priv  = ['can add post', 'can delete post', 'can ban user']):
         self.priv = priv
         
-    
-
-userAdmin = Admin('Evelio','Jimenez')
-userAdmin.show_privileges()
