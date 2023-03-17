@@ -10,10 +10,11 @@ class lotery:
         for i in(range(4)):
             valini = str(choice(self.values))
             val = val + valini
+
+        return val
         
-        print(val)
 
 lotery_result = lotery()
-print(f'the win value is ')
-lotery_result.random()
+v = lotery_result.random()
+print(f'the win value is {v}')
 
