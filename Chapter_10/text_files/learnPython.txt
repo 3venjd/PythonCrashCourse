@@ -1,0 +1,7 @@
+in python we can do:
+- automatizations
+- data analyst
+- data science
+- machine learning
+- deep learning
+- games!!
