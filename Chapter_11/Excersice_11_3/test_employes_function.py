@@ -18,6 +18,6 @@ class TestEmployeSalaryRise(unittest.TestCase):
     def test_give_custom_rise(self):
         self.employe.give_raise(2000)
         self.assertIn("8000",str(self.employe.dataEmploye["ActualSalary"]))
-
+""
 if __name__ == '__main__':
     unittest.main()
