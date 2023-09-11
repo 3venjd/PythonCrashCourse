@@ -4,6 +4,8 @@ from settings import Settings
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from time import sleep
+from game_stats import GameStats
 
 
 class AlienIvasion:
@@ -19,6 +21,9 @@ class AlienIvasion:
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
 
+        #Create an instance to store game statistics
+        self.stats = GameStats(self)
+
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -30,9 +35,12 @@ class AlienIvasion:
         while True:
             #use a helpers method to allow manage events separately
             self._check_events()
-            self.ship.update()
-            self._update_bullets()
-            self._update_aliens()
+
+            if self.stats.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
+
             self._update_screen()
 
 
@@ -75,7 +83,6 @@ class AlienIvasion:
             self.bullets.add(new_bullet)
 
 
-
     def _update_screen(self):
         # Redraw the screen during  each pass through the loop
         self.screen.fill(self.settings.bg_color)
@@ -94,10 +101,29 @@ class AlienIvasion:
         self.bullets.update()
 
         #Get rid of bullets that have disappeared
-        for bullet in self.bullets.copy(): #1
-            if bullet.rect.bottom <= 0:#2
-                self.bullets.remove(bullet) #3
+        for bullet in self.bullets.copy(): 
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+        
+        self._check_bullet_alien_collisions()
 
+       
+
+    def _check_bullet_alien_collisions(self):
+        """Respond to bullet_alien_collisions"""
+        # Remove anu bullets and aliens that have collided
+
+        # Check for any bullets that have hit alines.
+        # if so, get rid of the bullet and the alien
+        collisions = pygame.sprite.groupcollide(
+            self.bullets, self.aliens, True, True
+        )
+
+        if not self.aliens:
+        # Destroy existing bullets and create new fleet
+            self.bullets.empty()
+            self._create_fleet()
+        
     def _create_fleet(self):
         """Create the fleet of aliens"""
         #Create an alien and find the number of alines in a row
@@ -138,6 +164,13 @@ class AlienIvasion:
         self._check_fleet_edges()
         self.aliens.update()
 
+        #look for alien-ship collisions
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
+
+        # Look for alines hitting the bottom of the screen
+        self._check_aliens_bottom()
+
     def _check_fleet_edges(self):
         """Respond appropriately if any aliens have reached and edge"""
         for alien in self.aliens.sprites():
@@ -151,6 +184,34 @@ class AlienIvasion:
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
     
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien"""
+        if self.stats.ships_left > 0:
+            #Decrement ships_left
+            self.stats.ships_left -= 1
+
+            #Get rid of any remaining aliens and bullets
+            self.aliens.empty()
+            self.bullets.empty()
+
+            #create a new fleet and center the ship
+            self._create_fleet()
+            self.ship.center_ship()
+
+            #pause
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+    
+    def _check_aliens_bottom(self):
+        """Check if any aliens have reached the bottom of the screen"""
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                #Treat this the same as if the ship got hit
+                self._ship_hit()
+                break
+
 if __name__ == '__main__':
     #Make a game instance, and run the game 
     ai = AlienIvasion()
