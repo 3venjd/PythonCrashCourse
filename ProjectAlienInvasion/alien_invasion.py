@@ -32,7 +32,7 @@ class AlienIvasion:
             self._check_events()
             self.ship.update()
             self._update_bullets()
-
+            self._update_aliens()
             self._update_screen()
 
 
@@ -130,6 +130,26 @@ class AlienIvasion:
         alien.rect.x = alien.x
         alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number #4
         self.aliens.add(alien)    
+
+    def _update_aliens(self):
+        """
+        Check of the fleet is at and edge,
+        then update the positions of all alines in the fleet"""
+        self._check_fleet_edges()
+        self.aliens.update()
+
+    def _check_fleet_edges(self):
+        """Respond appropriately if any aliens have reached and edge"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+    
+    def _change_fleet_direction(self):
+        """Drop the entire fleet and change the fleet's direction"""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
     
 if __name__ == '__main__':
     #Make a game instance, and run the game 
